@@ -1,0 +1,342 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <link href="{% static 'main/images/logo.png' %}" rel="icon">
+  <title>Admin-addelection</title>
+  <link href="{% static 'admin/vendor/fontawesome-free/css/all.min.css' %}" rel="stylesheet" type="text/css">
+  <link href="{% static 'admin/vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet" type="text/css">
+  <link href="{% static 'admin/css/ruang-admin.min.css' %}" rel="stylesheet">
+  <script src="{% static 'main/js/sweetalert.min.js' %}"></script>
+  <script type="text/javascript" >
+    function  validation(){
+        let electionName = document.myform.electionname
+        let headofelection = document.myform.headofelection
+        let electionpicture = document.myform.electionpicture
+        let electiondate = document.myform.electiondate
+        let constituency = document.myform.constituency
+        let electionarea = document.myform.electionarea
+        let electionaddress = document.myform.electionaddress
+        let city = document.myform.city
+        let state = document.myform.state
+        let zip = document.myform.zip
+
+
+        if (electionName.value.length <= 0){
+          alert('Please enter Election Name')
+          electionName.focus()
+          return false;
+        }
+        if (headofelection.value.length <=0){
+          alert('Please enter Head of Election')
+          headofelection.focus()
+          return false;
+        }
+        if (electionpicture.value.length <=0){
+          alert('Please Upload Picture of Election')
+          electionpicture.focus()
+          return false;
+        }
+        if (electiondate.value.length <=0){
+          alert('Please enter Election Date')
+          electiondate.focus()
+          return false;
+        }
+        if (constituency.value == 'select'){
+          alert('Please Select constituency')
+          constituency.focus()
+          return false;
+        }
+        if (electionarea.value.length <=0){
+          alert('Please enter Election Area')
+          electionarea.focus()
+          return false;
+        }
+        if (electionaddress.value.length <=0){
+          alert('Please enter Election Address')
+          electionaddress.focus()
+          return false;
+        }
+        if (city.value.length <=0){
+          alert('Please enter City')
+          city.focus()
+          return false;
+        }
+        if (state.value.length <=0){
+          alert('Please enter State')
+          state.focus()
+          return false;
+        }
+        if (zip.value.length <=0){
+          alert('Please enter Zip')
+          zip.focus()
+          return false;
+        }
+        
+    }
+</script>
+
+</head>
+
+<body id="page-top">
+  <div id="wrapper">
+    <!-- Sidebar -->
+    <ul class="navbar-nav sidebar sidebar-light accordion" id="accordionSidebar">
+      <a class="sidebar-brand d-flex align-items-center justify-content-center" href="">
+        <div class="sidebar-brand-icon">
+          <img src="{% static 'admin/img/logo/logo2.png' %}">
+        </div>
+        <div class="sidebar-brand-text mx-3">Admin</div>
+      </a>
+      <hr class="sidebar-divider my-0">
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'admin_dashboard' %}">
+          <i class="fas fa-fw fa-tachometer-alt"></i>
+          <span>Dashboard</span></a>
+        </li>
+        <hr class="sidebar-divider">
+        <li class="nav-item">
+          <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseBootstrap"
+          aria-expanded="true" aria-controls="collapseBootstrap">
+          <i class="far fa-fw fa-window-maximize"></i>
+          <span>Election Management</span>
+        </a>
+        <div id="collapseBootstrap" class="collapse show" aria-labelledby="headingBootstrap"
+        data-parent="#accordionSidebar">
+        <div class="bg-white py-2 collapse-inner rounded">
+          <a class="collapse-item active" href="{% url 'admin_add_election' %}">Add Election</a>
+          <a class="collapse-item" href="{% url 'admin_add_candidates' %}">Add Candidate</a>
+          <a class="collapse-item" href="{% url 'admin_view_elections' %}">View Elections</a>
+
+        </div>
+      </div>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link collapsed" href="{% url 'admin_results' %}" data-toggle="" data-target="#collapseForm" aria-expanded="true"
+      aria-controls="collapseForm">
+      <i class="fab fa-fw fa-wpforms"></i>
+      <span>Results</span>
+    </a>
+  </li>
+  <hr class="sidebar-divider">
+</ul>
+<!-- Sidebar -->
+<div id="content-wrapper" class="d-flex flex-column">
+  <div id="content">
+    <!-- TopBar -->
+    <nav class="navbar navbar-expand navbar-light bg-navbar topbar mb-4 static-top">
+      <button id="sidebarToggleTop" class="btn btn-link rounded-circle mr-3">
+        <i class="fa fa-bars"></i>
+      </button>
+      <ul class="navbar-nav ml-auto">         
+        <div class="topbar-divider d-none d-sm-block"></div>
+        <li class="nav-item dropdown no-arrow">
+          <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown"
+          aria-haspopup="true" aria-expanded="false">
+          <img class="img-profile rounded-circle" src="{% static 'admin/img/boy.png' %}" style="max-width: 60px">
+          <span class="ml-2 d-none d-lg-inline text-white small">Admin</span>
+        </a>
+        <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
+          
+          
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" href="{% url 'admin_login' %}" data-toggle="modal" data-target="#logoutModal">
+            <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+            Logout
+          </a>
+        </div>
+      </li>
+    </ul>
+  </nav>
+  <!-- Topbar -->
+  
+  <!-- Container Fluid-->
+  <div class="container-fluid pb-5" id="container-wrapper">
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+      <h1 class="h3 mb-0 text-gray-800">New Election</h1>
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'index' %}">Election Management</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Add Elections</li>
+      </ol>
+    </div>
+    
+    
+    <!--Row-->
+    <div>
+      <h2 class="text-dark m-5 text-center">In order to conduct a new election, you must register the election here :</h2>
+    </div>
+    <hr>
+    <form method="post" enctype="multipart/form-data" name="myform" onsubmit="return validation()">
+      {% csrf_token %}
+      <br>
+      
+      <div class="form-row">
+        <div class="form-group col-md-6">
+          <label for="input-election-name">Election Name :</label>
+          <input type="text" name="electionname" class="form-control" id="input-election-name" placeholder="ex.@GHMC">
+        </div>
+        <div class="form-group col-md-6">
+          <label for="inputparty">Head of Election :</label>
+          <input type="text" name="headofelection" class="form-control" id="inputParty" placeholder="ex. @sundhar rao ">               
+        </div>
+      </div>
+      <div class="form-row">
+        
+        <div class="form-group col-md-6">
+          <label for="input-ele-date">Election-Picture :</label>
+          <input type="file" name="electionpicture" class="form-control" id="input-ele-date" placeholder="">
+        </div>
+        <div class="form-group col-md-6">
+          <label for="input-ele-date">Election-Date :</label>
+          <input type="date" name="electiondate" class="form-control" id="input-ele-date" placeholder="">
+        </div>
+      </div>
+      <div class="form-row">
+        
+
+      </div>
+      <div class="form-row">
+        <div class="form-group col-md-6">
+          <label for="constituency">Type :</label>
+          <select name="constituency" class="form-select text-muted  form-control  "  id="constituency">
+            <option value="select" hidden selected>Select</option>
+            <option >General Election</option>
+            <option >Rajya Sabha Election</option>
+            <option >Municipal Election</option>
+            <option >Assembly Election</option>
+            <option >Lok Sabha Election</option>
+            <optionvalue="state-assembly-elections">State Assembly Election</option>
+          </select>
+        </div>
+        <div class="form-group col-md-6">
+          <label for="input-area">Area to Conduct Election:</label>
+          <input type="text" name="electionarea" class="form-control" id="input-area" placeholder="ex. @Hayathnagar ">
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="inputAddress">Address (Exact):</label>
+        <input type="text" name="electionaddress" class="form-control" id="inputAddress" placeholder="">
+      </div>
+      <div class="form-row">
+        <div class="form-group col-md-4">
+          <label for="inputCity">City :</label>
+          <input type="text" name="city" class="form-control" id="inputCity" placeholder="ex . @hyderabad">
+        </div>
+        <div class="form-group col-md-6">
+          <label for="inputState">State :</label>
+          <input type="text" name="state" class="form-control" id="inputState" placeholder="ex . @Telangana">
+        </div>
+        <div class="form-group col-md-2">
+          <label for="inputZip">Zip :</label>
+          <input type="number" name="zip" class="form-control" id="inputZip">
+        </div>
+      </div>
+      <div class="text-center m-4">
+        <button type="submit" class="btn btn-primary col-6 mx-auto mb-3">Create New Election</button>
+      </div>
+    </form>
+    
+    <!-- Modal Logout -->
+    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabelLogout"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabelLogout">Ohh No!</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p>Are you sure you want to logout?</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-primary" data-dismiss="modal">Cancel</button>
+          <a href="{% url 'admin_login' %}" class="btn btn-primary">Logout</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+</div>
+<!---Container Fluid-->
+</div>
+{% if messages %} 
+{% for message in messages %} 
+{% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+<script>
+  swal({
+    title: "Error :(",
+    text: "{{message}}",
+    icon: "error",
+    button: "OK",
+  });
+</script>
+{% elif message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+<script>
+  swal({
+    title: "Success :)",
+    text: "{{message}}",
+    icon: "success",
+    button: "OK",
+  });
+</script>
+
+{% elif message.level == DEFAULT_MESSAGE_LEVELS.INFO %}
+<script>
+  swal({
+    title: "Info :(",
+    text: "{{message}}",
+    icon: "info",
+    button: "OK",
+  });
+</script>
+
+{% elif message.level == DEFAULT_MESSAGE_LEVELS.WARNING %}
+<script>
+  swal({
+    title: "Warning :(",
+    text: "{{message}}",
+    icon: "warning",
+    button: "OK",
+  });
+</script>
+
+{% endif %} 
+{% endfor %} 
+{% endif %}
+
+<!-- Footer -->
+<footer class="sticky-footer bg-white">
+  <div class="container my-auto">
+    <div class="copyright text-center my-auto">
+      <span>copyright & developed by
+        <b><a href="http://samskruti.ac.in/" target="_blank">Batch 11</a></b>
+      </span>
+    </div>
+  </div>
+</footer>
+<!-- Footer -->
+</div>
+</div>
+
+<!-- Scroll to top -->
+<a class="scroll-to-top rounded" href="#page-top">
+  <i class="fas fa-angle-up"></i>
+</a>
+
+<script src="{% static 'admin/vendor/jquery/jquery.min.js' %}"></script>
+<script src="{% static 'admin/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+<script src="{% static 'admin/vendor/jquery-easing/jquery.easing.min.js' %}"></script>
+<script src="{% static 'admin/js/ruang-admin.min.js' %}"></script>
+<script src="{% static 'admin/vendor/chart.js/Chart.min.js' %}"></script>
+<script src="{% static 'admin/js/demo/chart-area-demo.js' %}"></script>  
+</body>
+
+</html>

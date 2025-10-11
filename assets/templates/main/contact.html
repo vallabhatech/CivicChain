@@ -1,0 +1,181 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Smart Electronic voting Application</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  
+  
+  <link href="https://fonts.googleapis.com/css?family=Muli:300,400,700,900" rel="stylesheet">
+  <link href="{% static 'main/images/logo.png' %}" rel="icon">
+
+  <link rel="stylesheet" href="{% static 'main/fonts/icomoon/style.css' %}">
+  
+  <link rel="stylesheet" href="{% static 'main/css/bootstrap.min.css' %}">
+  <link rel="stylesheet" href="{% static 'main/css/jquery-ui.css' %}">
+  <link rel="stylesheet" href="{% static 'main/css/owl.carousel.min.css' %}">
+  <link rel="stylesheet" href="{% static 'main/css/owl.theme.default.min.css' %}">
+  <link rel="stylesheet" href="{% static 'main/css/owl.theme.default.min.css' %}">
+  
+  <link rel="stylesheet" href="{% static 'main/css/jquery.fancybox.min.css' %}">
+  
+  <link rel="stylesheet" href="{% static 'main/css/bootstrap-datepicker.css' %}">
+  
+  <link rel="stylesheet" href="{% static 'main/fonts/flaticon/font/flaticon.css' %}">
+  
+  <link rel="stylesheet" href="{% static 'main/css/aos.css' %}">
+  
+  <link rel="stylesheet" href="{% static 'main/css/style.css' %}">
+  <script src="{% static 'main/js/sweetalert.min.js' %}"></script>
+
+
+  
+</head>
+<body data-spy="scroll" data-target=".site-navbar-target" data-offset="300">
+  <div class="site-wrap">
+    <div class="site-mobile-menu site-navbar-target">
+      <div class="site-mobile-menu-header">
+        <div class="site-mobile-menu-close mt-3">
+          <span class="icon-close2 js-menu-toggle"></span>
+        </div>
+      </div>
+      <div class="site-mobile-menu-body"></div>
+    </div>
+    
+                    <!-- header start -->
+
+                    <header class="site-navbar navv py-4 js-sticky-header site-navbar-target" role="banner">      
+                      <div class="container-fluid">
+                        <div class="d-flex align-items-center">
+                          <div class="site-logo mr-auto">
+                            
+                            <a href="{% url 'index' %}"><img src="{% static 'main/images/logo.png' %}" style="width: 40px;margin-bottom: 5px;" > Blockchain Voting</a>
+                          </div>
+                          <div class="mx-auto text-center">
+                            <nav class="site-navigation position-relative text-right" role="navigation">
+                              <ul class="site-menu main-menu js-clone-nav mx-auto d-none d-lg-block  m-0 p-0">
+                                <li><a href="{% url 'index' %}" class="nav-link ">Home</a></li>
+                                <li><a href="{% url 'voter_elections' %}" class="nav-link">Elections</a></li>
+                                <li><a href="{% url 'voter_results' %}" class="nav-link">Results</a></li>
+                                <li><a href="{% url 'admin_login' %}" class="nav-link">Admin</a></li>
+                                <li><a href="{% url 'contact' %}" class="nav-link active">Contact</a></li>
+                              </ul>
+                            </nav>
+                          </div>
+                          <div class="d-inline-block d-lg-none site-menu-toggle js-menu-toggle  float-right ml-auto">
+                            
+                            <a href="#" class="" style="color: black;"><span class="icon-menu h3"></span></a>
+                          </div>
+                        </div>
+                      </div>  
+                    </header>
+
+    <div class="site-section bg-light" id="contact-section">
+      <div class="slide-1" style="background-image: url('/static/main/images/eci.jpeg');" data-stellar-background-ratio="0.5">
+      
+      <div class="container pt-5">
+
+        <div class="row justify-content-center">
+          <div class="col-md-7">
+
+
+            
+            <h2 class="section-title mb-3 text-light">Message Us</h2>
+            <p class="mb-5">Any Queries Regarding To This Website , Please Free To Message Us.</p>
+          
+            <form method="post" data-aos="fade">
+              <div class="form-group row">
+                <div class="col-md-6 mb-3 mb-lg-0">
+                  <input type="text" class="form-control" placeholder="First name">
+                </div>
+                <div class="col-md-6">
+                  <input type="text" class="form-control" placeholder="Last name">
+                </div>
+              </div>
+
+              <div class="form-group row">
+                <div class="col-md-12">
+                  <input type="text" class="form-control" placeholder="Subject">
+                </div>
+              </div>
+              <div class="form-group row">
+                <div class="col-md-12">
+                  <input type="email" class="form-control" placeholder="Email">
+                </div>
+              </div>
+              <div class="form-group row">
+                <div class="col-md-12">
+                  <textarea class="form-control" id="" cols="30" rows="10" placeholder="Write your message here."></textarea>
+                </div>
+              </div>
+
+              <div class="form-group row">
+                <div class="col-md-6">
+                  
+                  <input type="submit" class="btn btn-primary py-3 px-5 btn-block btn-pill" value="Send Message">
+                </div>
+              </div>
+
+            </form>
+          </div>
+        </div>
+      </div>
+      </div>
+    </div>
+
+    <footer class="footer-section foot bg-white mt-5">
+      <hr>
+      
+      <div class="container">
+        <div class="row">
+          <div class="col-md-4">
+            <h3> </h3>
+            <p> </p>
+          </div>
+            
+          <div class="col-md-3 ml-auto">
+              <h3>Links</h3>
+              <ul class="list-unstyled footer-links">
+                <li><a href="{% url 'index' %}">Home</a></li>
+                 
+                <li><a href="{% url 'admin_login' %}">Admin</a></li>
+                <li><a href="{% url 'contact' %}">Contact Us</a></li>
+              </ul>
+          </div>
+            <p class="text-center">
+              Copyright All rights reserved | This project is made with <i class="icon-heart" aria-hidden="true"></i> by <a href="http://samskruti.ac.in/" target="codebook.in" >Batch 11</a>
+            </p> 
+        </div>
+      </div>
+    </footer>
+      
+                <!-- footer end -->
+      
+      
+      
+    </div>
+    
+    <script src="{% static 'main/js/jquery-3.3.1.min.js' %}"></script>
+    <script src="{% static 'main/js/jquery-migrate-3.0.1.min.js' %}"></script>
+    <script src="{% static 'main/js/jquery-ui.js' %}"></script>
+    <script src="{% static 'main/js/popper.min.js' %}"></script>
+    <script src="{% static 'main/js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'main/js/owl.carousel.min.js' %}"></script>
+    <script src="{% static 'main/js/jquery.stellar.min.js' %}"></script>
+    <script src="{% static 'main/js/jquery.countdown.min.js' %}"></script>
+    <script src="{% static 'main/js/bootstrap-datepicker.min.js' %}"></script>
+    <script src="{% static 'main/js/jquery.easing.1.3.js' %}"></script>
+    <script src="{% static 'main/js/aos.js' %}"></script>
+    <script src="{% static 'main/js/jquery.fancybox.min.js' %}"></script>
+    <script src="{% static 'main/js/jquery.sticky.js' %}"></script>
+    
+    
+    <script src="{% static 'main/js/main.js' %}"></script>
+    
+  </body>
+  </html>
+
+
+
+

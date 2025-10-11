@@ -1,0 +1,273 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <link href="{% static 'main/images/logo.png' %}" rel="icon">
+  <title>Admin - view-elecctions</title>
+  <link href="{% static 'admin/vendor/fontawesome-free/css/all.min.css' %}" rel="stylesheet" type="text/css">
+  <link href="{% static 'admin/vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet" type="text/css">
+  <link href="{% static 'admin/css/ruang-admin.min.css' %}" rel="stylesheet">
+  <script src="{% static 'main/js/sweetalert.min.js' %}"></script>
+
+</head>
+
+<body id="page-top">
+  <div id="wrapper">
+    <!-- Sidebar -->
+    <ul class="navbar-nav sidebar sidebar-light accordion" id="accordionSidebar">
+      <a class="sidebar-brand d-flex align-items-center justify-content-center" href="">
+        <div class="sidebar-brand-icon">
+          <img src="{% static 'admin/img/logo/logo2.png' %}">
+        </div>
+        <div class="sidebar-brand-text mx-3">Admin</div>
+      </a>
+      <hr class="sidebar-divider my-0">
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'admin_dashboard' %}">
+          <i class="fas fa-fw fa-tachometer-alt"></i>
+          <span>Dashboard</span></a>
+        </li>
+        <hr class="sidebar-divider">
+        <li class="nav-item">
+          <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseBootstrap"
+          aria-expanded="true" aria-controls="collapseBootstrap">
+          <i class="far fa-fw fa-window-maximize"></i>
+          <span>Election Management</span>
+        </a>
+        <div id="collapseBootstrap" class="collapse show" aria-labelledby="headingBootstrap"
+        data-parent="#accordionSidebar">
+        <div class="bg-white py-2 collapse-inner rounded">
+          <a class="collapse-item" href="{% url 'admin_add_election' %}">Add Election</a>
+          <a class="collapse-item" href="{% url 'admin_add_candidates' %}">Add Candidate</a>
+          <a class="collapse-item active" href="{% url 'admin_view_elections' %}">View Elections</a>
+
+        </div>
+      </div>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link collapsed" href="{% url 'admin_results' %}" data-toggle="" data-target="#collapseForm" aria-expanded="true"
+      aria-controls="collapseForm">
+      <i class="fab fa-fw fa-wpforms"></i>
+      <span>Results </span>
+    </a>
+  </li>
+  <hr class="sidebar-divider">
+</ul>
+<!-- Sidebar -->
+<div id="content-wrapper" class="d-flex flex-column">
+  <div id="content">
+    <!-- TopBar -->
+    <nav class="navbar navbar-expand navbar-light bg-navbar topbar mb-4 static-top">
+      <button id="sidebarToggleTop" class="btn btn-link rounded-circle mr-3">
+        <i class="fa fa-bars"></i>
+      </button>
+      <ul class="navbar-nav ml-auto">         
+        <div class="topbar-divider d-none d-sm-block"></div>
+        <li class="nav-item dropdown no-arrow">
+          <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown"
+          aria-haspopup="true" aria-expanded="false">
+          <img class="img-profile rounded-circle" src="{% static 'admin/img/boy.png' %}" style="max-width: 60px">
+          <span class="ml-2 d-none d-lg-inline text-white small">Admin</span>
+        </a>
+        <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
+          
+          
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" href="{% url 'index' %}" data-toggle="modal" data-target="#logoutModal">
+            <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+            Logout
+          </a>
+        </div>
+      </li>
+    </ul>
+  </nav>
+  <!-- Topbar -->
+  
+  <!-- Container Fluid-->
+  <div class="container-fluid pb-5" id="container-wrapper">
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+      <h1 class="h3 mb-0 text-gray-800">Elections</h1>
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'admin_dashboard' %}">Election Management</a></li>
+        <li class="breadcrumb-item active" aria-current="page"> Elections</li>
+      </ol>
+    </div>
+    
+    <div class="row mb-3">
+      
+      <table class="table align-middle mb-0 bg-white m-2">
+        <thead class="bg-light">
+          <tr>
+            <th>Sno.</th>
+            <th>Election Name</th>
+            <th>Picture</th>
+            <th>Head of Election</th>
+            <th>Election Date</th>
+            <th>Constituency</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for i in elections %}
+          <tr>
+            <td class="sno">
+              {{i.id}}
+            </td>
+            <td>
+              {{i.election_name}}
+            </td>
+            <td>
+              <div class="d-flex align-items-center">
+                <img
+                src="/media/{{i.election_picture}}"
+                alt=""
+                style="width: 45px; height: 45px"
+                class="rounded-circle mr-2"
+                />
+                <!-- <div class="ms-3">
+                  <p class="fw-bold mb-1">Kalvakuntla Chandra Shekar Rao</p>
+                  <p class="text-muted mb-0 small" >Telangana candidate</p>
+                </div> -->
+              </div>
+            </td>
+            <td>
+              <p class="fw-normal mb-1">{{i.election_head}}</p>
+              <!-- <p class="text-muted mb-0 small">EST . 2013</p> -->
+            </td>
+            <td>
+              <span class="badge badge-primary  d-inline">{{i.election_date}}</span>
+            </td>
+            <td>{{i.constituency}}</td>
+            <td>
+              <a href="{% url 'admin_view_candidates' i.id %}"
+              type="button"
+              class="btn btn-primary btn-rounded btn-sm"
+              data-mdb-ripple-color="dark"
+              >
+              View
+            </a>
+          </td>
+        </tr>
+        {% endfor %}
+
+
+   
+</tbody>
+</table>
+
+<!-- Area Chart -->
+
+<!-- Pie Chart -->
+
+<!-- Invoice Example -->
+
+<!-- Message From Customer-->
+
+</div>
+<!--Row-->
+
+<!-- Modal Logout -->
+<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabelLogout"
+aria-hidden="true">
+<div class="modal-dialog" role="document">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title" id="exampleModalLabelLogout">Ohh No!</h5>
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <p>Are you sure you want to logout?</p>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-outline-primary" data-dismiss="modal">Cancel</button>
+      <a href="{% url 'admin_login' %}" class="btn btn-primary">Logout</a>
+    </div>
+  </div>
+</div>
+</div>
+
+</div>
+<!---Container Fluid-->
+</div>
+
+{% if messages %} 
+{% for message in messages %} 
+{% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+<script>
+  swal({
+    title: "Error :(",
+    text: "{{message}}",
+    icon: "error",
+    button: "OK",
+  });
+</script>
+{% elif message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+<script>
+  swal({
+    title: "Success :)",
+    text: "{{message}}",
+    icon: "success",
+    button: "OK",
+  });
+</script>
+
+{% elif message.level == DEFAULT_MESSAGE_LEVELS.INFO %}
+<script>
+  swal({
+    title: "Info :(",
+    text: "{{message}}",
+    icon: "info",
+    button: "OK",
+  });
+</script>
+
+{% elif message.level == DEFAULT_MESSAGE_LEVELS.WARNING %}
+<script>
+  swal({
+    title: "Warning :(",
+    text: "{{message}}",
+    icon: "warning",
+    button: "OK",
+  });
+</script>
+
+{% endif %} 
+{% endfor %} 
+{% endif %}
+
+<!-- Footer -->
+<footer class="sticky-footer bg-white">
+  <div class="container my-auto">
+    <div class="copyright text-center my-auto">
+      <span>copyright & developed by
+        <b><a href="http://samskruti.ac.in/" target="_blank">Batch 11</a></b>
+      </span>
+    </div>
+  </div>
+</footer>
+<!-- Footer -->
+</div>
+</div>
+
+<!-- Scroll to top -->
+<a class="scroll-to-top rounded" href="#page-top">
+  <i class="fas fa-angle-up"></i>
+</a>
+
+<script src="{% static 'admin/vendor/jquery/jquery.min.js' %}"></script>
+<script src="{% static 'admin/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+<script src="{% static 'admin/vendor/jquery-easing/jquery.easing.min.js' %}"></script>
+<script src="{% static 'admin/js/ruang-admin.min.js' %}"></script>
+<script src="{% static 'admin/vendor/chart.js/Chart.min.js' %}"></script>
+<script src="{% static 'admin/js/demo/chart-area-demo.js' %}"></script>  
+</body>
+
+</html>

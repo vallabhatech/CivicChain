@@ -1,0 +1,206 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Smart Electronic voting Application</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  
+  
+  <link href="https://fonts.googleapis.com/css?family=Muli:300,400,700,900" rel="stylesheet">
+  <link href="{% static 'main/images/logo.png' %}" rel="icon">
+
+  <link rel="stylesheet" href="{% static 'main/fonts/icomoon/style.css' %}">
+  
+  <link rel="stylesheet" href="{% static 'main/css/bootstrap.min.css' %}">
+  <link rel="stylesheet" href="{% static 'main/css/jquery-ui.css' %}">
+  <link rel="stylesheet" href="{% static 'main/css/owl.carousel.min.css' %}">
+  <link rel="stylesheet" href="{% static 'main/css/owl.theme.default.min.css' %}">
+  <link rel="stylesheet" href="{% static 'main/css/owl.theme.default.min.css' %}">
+  
+  <link rel="stylesheet" href="{% static 'main/css/jquery.fancybox.min.css' %}">
+  
+  <link rel="stylesheet" href="{% static 'main/css/bootstrap-datepicker.css' %}">
+  
+  <link rel="stylesheet" href="{% static 'main/fonts/flaticon/font/flaticon.css' %}">
+  
+  <link rel="stylesheet" href="{% static 'main/css/aos.css' %}">
+  
+  <link rel="stylesheet" href="{% static 'main/css/style.css' %}">
+  <link rel="stylesheet" href="{% static 'main/css/otp.css' %}">
+
+  <script src="{% static 'main/js/sweetalert.min.js' %}"></script>
+  
+ 
+  
+</head>
+<body data-spy="scroll" data-target=".site-navbar-target" data-offset="300">
+  <div class="site-wrap">
+    <div class="site-mobile-menu site-navbar-target">
+      <div class="site-mobile-menu-header">
+        <div class="site-mobile-menu-close mt-3">
+          <span class="icon-close2 js-menu-toggle"></span>
+        </div>
+      </div>
+      <div class="site-mobile-menu-body"></div>
+    </div>
+    
+    
+    <header class="site-navbar navv py-4 js-sticky-header site-navbar-target" role="banner">      
+      <div class="container-fluid">
+        <div class="d-flex align-items-center">
+          <div class="site-logo mr-auto">
+            
+            <a href="{% url 'index' %}"><img src="{% static 'main/images/logo.png' %}" style="width: 40px;margin-bottom: 5px;" > Blockchain Voting</a>
+          </div>
+          <div class="mx-auto text-center">
+            <nav class="site-navigation position-relative text-right" role="navigation">
+              <ul class="site-menu main-menu js-clone-nav mx-auto d-none d-lg-block  m-0 p-0">
+                <li><a href="{% url 'index' %}" class="nav-link ">Home</a></li>
+                <li><a href="{% url 'voter_elections' %}" class="nav-link active">Elections</a></li>
+                <li><a href="{% url 'voter_results' %}" class="nav-link">Results</a></li>
+                <li><a href="{% url 'admin_login' %}" class="nav-link">Admin</a></li>
+                <li><a href="{% url 'contact' %}" class="nav-link">Contact</a></li>
+              </ul>
+            </nav>
+          </div>
+          <div class="d-inline-block d-lg-none site-menu-toggle js-menu-toggle   float-right ml-auto">
+            
+            <a href="#" class="text-blacks"><span class="icon-menu h3"></span></a>
+          </div>
+        </div>
+      </div>  
+    </header>
+    
+    
+    <div class="container pt-5">
+        <section class="container mt-5 pt-5">
+            <div class="row">
+                <div class="col-lg-12">
+                  <h2 class="d-flex justify-content-center">OTP has been sent to your Registered Mobile</h2>
+                    <form class="text-center" method="post" action="">
+                      {% csrf_token %}
+                        <div class="form-group">
+                            <label for="password" class="text-white">Enter 4 Digit Password</label>
+                            <div class="passcode-wrapper">
+                                <input id="codeBox1" name="otp1" type="number" maxlength="1" onkeyup="onKeyUpEvent(1, event)" onfocus="onFocusEvent(1)">
+                                <input id="codeBox2" name="otp2" type="number" maxlength="1" onkeyup="onKeyUpEvent(2, event)" onfocus="onFocusEvent(2)">
+                                <input id="codeBox3" name="otp3" type="number" maxlength="1" onkeyup="onKeyUpEvent(3, event)" onfocus="onFocusEvent(3)">
+                                <input id="codeBox4" name="otp4" type="number" maxlength="1" onkeyup="onKeyUpEvent(4, event)" onfocus="onFocusEvent(4)">
+                            </div>
+                        </div>
+                        <div>
+                          <button type="submit" class="btn btn-primary">Submit</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </section>
+</div>
+<div> 
+  <ul class="list-unstyled footer-links">
+    <li><a href="{% url 'voter_elections' %}"><h6 class="text-primary mr-5 text-center pt-5">Go back</h6></a></li>
+  </ul>
+</div>
+
+{% if messages %} 
+    {% for message in messages %} 
+    {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+    <script>
+      swal({
+        title: "Error :(",
+        text: "{{message}}",
+        icon: "error",
+        button: "OK",
+      });
+    </script>
+    {% elif message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+    <script>
+      swal({
+        title: "Success :)",
+        text: "{{message}}",
+        icon: "success",
+        button: "OK",
+      });
+    </script>
+    
+    {% elif message.level == DEFAULT_MESSAGE_LEVELS.INFO %}
+    <script>
+      swal({
+        title: "Info :(",
+        text: "{{message}}",
+        icon: "info",
+        button: "OK",
+      });
+    </script>
+    
+    {% elif message.level == DEFAULT_MESSAGE_LEVELS.WARNING %}
+    <script>
+      swal({
+        title: "Warning :(",
+        text: "{{message}}",
+        icon: "warning",
+        button: "OK",
+      });
+    </script>
+    
+    {% endif %} 
+    {% endfor %} 
+    {% endif %}
+    
+
+<footer class="footer-section foot bg-white mt-5">
+  <hr>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-4">
+        <h3> </h3>
+        <p> </p>
+        </div>            
+        <div class="col-md-3 ml-auto">
+          <h3>Links</h3>
+          <ul class="list-unstyled footer-links">
+             <li><a href="{% url 'index' %}">Home</a></li>
+            <li><a href="{% url 'voter_elections' %}">Elections</a></li>
+            <li><a href="{% url 'voter_results' %}">Results</a></li>
+          </ul>
+        </div>
+        <p class="text-center">
+          Copyright All rights reserved | This project is made with <i class="icon-heart" aria-hidden="true"></i> by <a href="http://samskruti.ac.in/" target="codebook.in" >Batch 11</a>
+        </p>           
+      </div>
+    </div>
+  </footer>
+  
+  
+</div> 
+
+<script src="{% static 'main/js/jquery-3.3.1.min.js' %}"></script>
+<script src="{% static 'main/js/jquery-migrate-3.0.1.min.js' %}"></script>
+<script src="{% static 'main/js/jquery-ui.js' %}"></script>
+<script src="{% static 'main/js/popper.min.js' %}"></script>
+<script src="{% static 'main/js/bootstrap.min.js' %}"></script>
+<script src="{% static 'main/js/owl.carousel.min.js' %}"></script>
+<script src="{% static 'main/js/jquery.stellar.min.js' %}"></script>
+<script src="{% static 'main/js/jquery.countdown.min.js' %}"></script>
+<script src="{% static 'main/js/bootstrap-datepicker.min.js' %}"></script>
+<script src="{% static 'main/js/jquery.easing.1.3.js' %}"></script>
+<script src="{% static 'main/js/aos.js' %}"></script>
+<script src="{% static 'main/js/jquery.fancybox.min.js' %}"></script>
+<script src="{% static 'main/js/jquery.sticky.js' %}"></script>
+
+
+<script src="{% static 'main/js/main.js' %}"></script>
+<script src="{% static 'main/js/otp.js' %}"></script>
+
+
+</body>
+</html>
+
+
+
+
+
+
+
+
