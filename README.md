@@ -13,3 +13,6 @@ After which the system requires the voters to scan their face and fingerprint wh
 Blockchain technology encrypts the vote and thus it prevents every vote from tampering. 
 It makes sure that a voter can vote only once for one candidate. 
 The system fetches the election results quickly and thus reduces the labour cost and counting errors.
+
+For the full project details, goals, and technical deep dive, please see the 
+
