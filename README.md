@@ -15,4 +15,4 @@ It makes sure that a voter can vote only once for one candidate.
 The system fetches the election results quickly and thus reduces the labour cost and counting errors.
 
 For the full project details, goals, and technical deep dive, please see the 
-[DECENTRALIZED ONLINE VOTING SYSTEM PROJECT REPORT (PDF)](documentation/documentation.pdf).
+[DECENTRALIZED ONLINE VOTING SYSTEM PROJECT REPORT (PDF)](Documentation/Documentation.pdf).
