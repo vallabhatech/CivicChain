@@ -1,6 +1,35 @@
-.venv/ 
-__pycache__/ 
-*.pyc 
-.venv/ 
-__pycache__/ 
-*.pyc 
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.egg-info/
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Virtual environments
+.venv/
+venv/
+env/
+dvoteenv/
+
+# Environment and secrets
+.env
+.env.*
+!.env.example
+
+# Django
+db.sqlite3
+media/*
+staticfiles/
+
+# IDE / OS
+.vscode/
+.idea/
+.DS_Store
+
+# Test and build output
+dist/
+build/
+*.log
