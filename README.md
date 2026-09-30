@@ -1,234 +1,162 @@
-# Decentralized Online Voting System Using Blockchain
+# CivicChain
 
-[![Django](https://img.shields.io/badge/Django-4.1.3-green.svg)](https://www.djangoproject.com/)
-[![Python](https://img.shields.io/badge/Python-3.10+-blue.svg)](https://www.python.org/)
-[![MySQL](https://img.shields.io/badge/MySQL-8.0+-orange.svg)](https://www.mysql.com/)
-[![Blockchain](https://img.shields.io/badge/Blockchain-Ethereum-purple.svg)](https://ethereum.org/)
-[![License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+A Django-based voting-system prototype exploring authenticated voter registration, election management, vote recording, and a hash-chain integrity layer.
 
-A secure, transparent, and decentralized online voting system that leverages blockchain technology to ensure vote integrity and prevent tampering while providing accessibility for all voters.
+> **Status:** Educational/demo project. It is **not** a production election system and has not been certified for real-world elections.
 
-## 🌟 Key Features
+## What is implemented
 
-### 🔐 Security & Authentication
-- **Multi-factor Authentication**: Aadhar card validation with voter ID linking
-- **Biometric Verification**: Face recognition and fingerprint scanning
-- **Blockchain Encryption**: Each vote is cryptographically secured and immutable
-- **One-Time Password (OTP)**: Secure mobile verification for voter authentication
+- Django web application with separate admin and voter modules.
+- Election and candidate management.
+- Voter registration with OTP workflow.
+- Vote submission with duplicate-vote checks at the application layer.
+- SHA-256 hash chaining for vote-integrity metadata.
+- Result and integrity-verification views.
+- MySQL support, with SQLite available as the default local-development database.
+- Environment-based configuration for secrets and external SMS credentials.
+- GitHub Actions CI and CodeQL scanning.
 
-### 🗳️ Voting System
-- **Remote Voting**: Vote from any location with internet access
-- **Real-time Results**: Instant vote counting and result publication
-- **Vote Integrity**: Prevents double voting and ensures each vote counts once
-- **Transparent Process**: Blockchain provides complete audit trail
+## Architecture
 
-### 👥 User Roles
-- **Administrator**: Election management, voter registration, candidate management
-- **Voter**: Secure voting, biometric authentication, vote tracking
-- **System**: Automated blockchain validation and result processing
+```text
+Browser
+  │
+  ├── Main app
+  ├── Voter app ────────┐
+  └── Admin app         │
+                        ▼
+                  Django models
+                        │
+              ┌─────────┴─────────┐
+              ▼                   ▼
+          Database          HashDataBlock
+                              SHA-256
+```
 
-### 🏗️ Technical Architecture
-- **Django Framework**: Robust web application backend
-- **MySQL Database**: Secure data storage for voter and election information
-- **Blockchain Integration**: Custom hashing algorithm for vote encryption
-- **Responsive UI**: Modern web interface accessible on all devices
+The blockchain component in this repository is a **custom hash-chain prototype**. It is not an Ethereum smart-contract implementation and should not be described as a public blockchain.
 
-## 📋 System Requirements
+## Requirements
 
-- **Python**: 3.10 or higher
-- **Django**: 4.1.3
-- **Database**: MySQL 8.0 or higher
-- **Operating System**: Windows/Linux/macOS
-- **Web Browser**: Modern browser with JavaScript enabled
+- Python 3.10–3.11
+- pip
+- Git
+- SQLite for the quickest local setup, or MySQL for a fuller deployment
+- A configured `BLOCKCHAIN_GENESIS_KEY`
 
-## 🚀 Quick Start
+## Quick start
 
-### Prerequisites
-1. Install Python 3.10+
-2. Install MySQL 8.0+
-3. Git for cloning the repository
+### Windows
 
-### Installation
-```bash
-# Clone the repository
-git clone https://github.com/yourusername/DECENTRALIZED-ONLINE-VOTING-SYSTEM-USING-BLOCKCHAIN.git
-cd DECENTRALIZED-ONLINE-VOTING-SYSTEM-USING-BLOCKCHAIN
+```bat
+git clone https://github.com/vallabhatech/CivicChain.git
+cd CivicChain
 
-# Create virtual environment
-python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
+python -m venv .venv
+.venv\Scripts\activate
 
-# Install dependencies
 pip install -r requirements.txt
+copy .env.example .env
+```
 
-# Configure database
-# Create MySQL database 'decentralized_voting'
-# Update settings.py with your database credentials
+Edit `.env` and set a unique `DJANGO_SECRET_KEY` and `BLOCKCHAIN_GENESIS_KEY`.
 
-# Run migrations
-python manage.py makemigrations
+### Linux/macOS
+
+```bash
+git clone https://github.com/vallabhatech/CivicChain.git
+cd CivicChain
+
+python3 -m venv .venv
+source .venv/bin/activate
+
+pip install -r requirements.txt
+cp .env.example .env
+```
+
+Then:
+
+```bash
 python manage.py migrate
-
-# Create superuser
 python manage.py createsuperuser
-
-# Start development server
+python manage.py check
+python manage.py test
 python manage.py runserver
 ```
 
-Access the application at `http://localhost:8000`
+Open `http://127.0.0.1:8000/`.
 
-## 📁 Project Structure
+## Configuration
 
-```
-DECENTRALIZED-ONLINE-VOTING-SYSTEM-USING-BLOCKCHAIN/
-├── adminapp/                    # Administrator module
-│   ├── models.py               # Database models for elections, candidates, voters
-│   ├── views.py                # Admin dashboard and management views
-│   ├── urls.py                 # Admin URL routing
-│   └── migrations/             # Database migrations
-├── voterapp/                   # Voter module
-│   ├── models.py               # Voter-specific models
-│   ├── views.py                # Voting interface and authentication
-│   └── urls.py                 # Voter URL routing
-├── mainapp/                    # Main application module
-│   ├── views.py                # Home page and common views
-│   └── urls.py                 # Main URL routing
-├── decentralizedvoting/         # Django project configuration
-│   ├── settings.py             # Django settings
-│   ├── urls.py                 # Main URL configuration
-│   └── BlockcahinAlgo.py       # Blockchain hashing algorithm
-├── assets/                     # Static files and templates
-│   ├── static/                 # CSS, JavaScript, images
-│   └── templates/              # HTML templates
-├── media/                      # User uploaded files
-├── Documentation/              # Project documentation
-├── manage.py                   # Django management script
-├── requirements.txt            # Python dependencies
-└── README.md                   # This file
-```
+Important variables:
 
-## 🔄 User Flow
+| Variable | Purpose |
+| --- | --- |
+| `DJANGO_SECRET_KEY` | Django signing/security secret |
+| `DJANGO_DEBUG` | Development debug flag |
+| `DJANGO_ALLOWED_HOSTS` | Comma-separated allowed hosts |
+| `DB_ENGINE` | Database backend |
+| `DB_NAME` | Database name/path |
+| `DB_USER` / `DB_PASSWORD` | Database credentials |
+| `BLOCKCHAIN_GENESIS_KEY` | Stable secret used as the hash-chain root |
+| `SMS_API_KEY` | Optional external SMS credential |
 
-### Administrator Flow
-1. **Login**: Access admin dashboard with credentials
-2. **Create Election**: Set up new elections with details, dates, and constituencies
-3. **Manage Candidates**: Add candidates with party information and symbols
-4. **Register Voters**: Add eligible voters with Aadhar and voter ID details
-5. **Monitor Voting**: Real-time monitoring of voting progress
-6. **Publish Results**: View and publish election results
+Never commit `.env` or real provider credentials.
 
-### Voter Flow
-1. **Registration**: Register with Aadhar card and voter ID
-2. **Authentication**: 
-   - Mobile OTP verification
-   - Face recognition scan
-   - Fingerprint verification
-3. **Voting**: Select preferred candidate from the list
-4. **Confirmation**: Receive blockchain-encrypted vote confirmation
-5. **Tracking**: Track vote status and view results
+## Security notes
 
-## 🛠️ Technical Implementation
+This project handles sensitive voter-related data and should be treated as a prototype.
 
-### Blockchain Integration
-The system uses a custom blockchain implementation with SHA-256 hashing:
+- Do not use real Aadhaar numbers, phone numbers, biometric data, or election records during development.
+- Hashing is **not encryption** and does not by itself provide ballot secrecy.
+- The application-level duplicate-vote check is not sufficient for a real election system.
+- OTP storage and authentication need additional hardening before production use.
+- External SMS integration is disabled unless credentials are explicitly configured.
+- Use HTTPS, secure secret management, database encryption, audit controls, independent security review, and jurisdiction-specific legal/compliance review before any real deployment.
 
-```python
-class HashDataBlock:
-    def __init__(self, previous_block_hash, data_list):
-        self.previous_block_hash = previous_block_hash
-        self.data_list = data_list
-        self.block_data = "-".join(data_list) + "-" + previous_block_hash
-        self.block_hash = hashlib.sha256(self.block_data.encode()).hexdigest()
+## Project layout
+
+```text
+CivicChain/
+├── adminapp/                 # Election administration and verification
+├── voterapp/                 # Registration, OTP and voting flows
+├── mainapp/                  # Public/common views
+├── decentralizedvoting/      # Django project settings and hash-chain code
+├── assets/                   # Templates and static assets
+├── docs/                     # Project documentation
+├── Documentation/            # Original project PDF
+├── .github/workflows/        # CI and CodeQL
+├── .env.example              # Safe configuration template
+├── manage.py
+├── requirements.txt
+└── README.md
 ```
 
-### Database Schema
-- **Voters**: Personal details, authentication data, voting status
-- **Elections**: Election details, dates, constituencies, candidates
-- **Candidates**: Candidate information, party details, vote counts
-- **Votes**: Blockchain-encrypted vote records with audit trail
+## Development
 
-### Security Features
-- **Encryption**: All sensitive data encrypted at rest and in transit
-- **Audit Trail**: Complete blockchain-based audit log
-- **Access Control**: Role-based access control for different user types
-- **Data Integrity**: Cryptographic validation of all vote data
-
-## 📊 Key Metrics
-
-- **Vote Processing Time**: < 2 seconds per vote
-- **Security Level**: Military-grade encryption
-- **Scalability**: Supports 1M+ concurrent voters
-- **Availability**: 99.9% uptime
-- **Audit Compliance**: Full regulatory compliance
-
-## 🔧 Configuration
-
-### Database Settings
-Update `decentralizedvoting/settings.py`:
-```python
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'decentralized_voting',
-        'USER': 'your_username',
-        'PASSWORD': 'your_password',
-        'HOST': 'localhost',
-        'PORT': '3306',
-    }
-}
-```
-
-### Security Settings
-- Update `SECRET_KEY` in production
-- Configure `ALLOWED_HOSTS` for production deployment
-- Set up HTTPS for secure communication
-
-## 🧪 Testing
+Run checks locally before opening a PR:
 
 ```bash
-# Run all tests
+python manage.py check
 python manage.py test
-
-# Run specific app tests
-python manage.py test adminapp
-python manage.py test voterapp
-
-# Run with coverage
-coverage run --source='.' manage.py test
-coverage report
 ```
 
-## 📚 Documentation
+The repository also runs these checks through GitHub Actions on pushes and pull requests.
+
+## Documentation
 
 - [Installation Guide](docs/INSTALLATION.md)
-- [User Manual](docs/USER_GUIDE.md)
-- [API Documentation](docs/API.md)
+- [User Guide](docs/USER_GUIDE.md)
+- [API Notes](docs/API.md)
 - [Deployment Guide](docs/DEPLOYMENT.md)
-- [Contributing Guidelines](docs/CONTRIBUTING.md)
+- [Project Structure](docs/PROJECT_STRUCTURE.md)
+- [Contributing](docs/CONTRIBUTING.md)
 
-## 🤝 Contributing
+Some legacy documentation describes planned or conceptual capabilities more broadly than the current code. Treat the implementation in this repository as the source of truth.
 
-We welcome contributions! Please read our [Contributing Guidelines](docs/CONTRIBUTING.md) for details on our code of conduct and the process for submitting pull requests.
+## License
 
-## 📄 License
+MIT — see [LICENSE](LICENSE).
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+## Disclaimer
 
-## 🙏 Acknowledgments
-
-- Django Framework for robust web development
-- Ethereum Foundation for blockchain inspiration
-- MySQL for reliable database management
-- Open-source community for valuable tools and libraries
-
-## 📞 Support
-
-For support and queries:
-- Email: support@votingsystem.com
-- Documentation: [Project Wiki](https://github.com/yourusername/DECENTRALIZED-ONLINE-VOTING-SYSTEM-USING-BLOCKCHAIN/wiki)
-- Issues: [GitHub Issues](https://github.com/yourusername/DECENTRALIZED-ONLINE-VOTING-SYSTEM-USING-BLOCKCHAIN/issues)
-
----
-
-**⚠️ Important**: This is a demonstration project. For production use, ensure compliance with local election laws and security regulations.
+CivicChain is an educational software project. Election infrastructure is safety-critical and requires substantially stronger guarantees than this prototype currently provides.
