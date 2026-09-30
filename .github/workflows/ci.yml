@@ -1,0 +1,43 @@
+name: CI
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.10", "3.11", "3.12"]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: pip
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Django checks
+        env:
+          DJANGO_SECRET_KEY: ci-only-secret
+          DJANGO_DEBUG: "True"
+          BLOCKCHAIN_GENESIS_KEY: ci-blockchain-key
+        run: python manage.py check
+
+      - name: Run tests
+        env:
+          DJANGO_SECRET_KEY: ci-only-secret
+          DJANGO_DEBUG: "True"
+          BLOCKCHAIN_GENESIS_KEY: ci-blockchain-key
+        run: python manage.py test
