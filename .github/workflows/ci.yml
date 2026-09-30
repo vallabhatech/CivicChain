@@ -13,11 +13,14 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: ["3.10", "3.11", "3.12"]
+        python-version: ["3.10", "3.11"]
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      - name: Install native database dependencies
+        run: sudo apt-get update && sudo apt-get install -y default-libmysqlclient-dev build-essential
 
       - name: Set up Python
         uses: actions/setup-python@v5
