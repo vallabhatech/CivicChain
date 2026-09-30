@@ -3,6 +3,7 @@ import random
 from datetime import date
 from django.shortcuts import render,redirect
 from django.contrib import messages
+from decouple import config
 from .models import *
 from adminapp.models import *
 from decentralizedvoting.BlockcahinAlgo import HashDataBlock
@@ -10,13 +11,21 @@ import urllib.request
 import urllib.parse
 
 #send sms function
-def sendSMS(user,otp,mobile):
-    data =  urllib.parse.urlencode({'username':'Codebook','apikey': '56dbbdc9cea86b276f6c' , 'mobile': mobile,
-        'message' : f'Hello {user}, your OTP for account activation is {otp}. This message is generated from https://www.codebook.in server. Thank you', 'senderid': 'CODEBK'})
-    data = data.encode('utf-8')
-    request = urllib.request.Request("https://smslogin.co/v3/api.php?")
-    f = urllib.request.urlopen(request, data)
-    return f.read()
+def sendSMS(user, otp, mobile):
+    """Send an OTP only when an SMS provider is explicitly configured."""
+    api_key = config("SMS_API_KEY", default="")
+    if not api_key:
+        return None
+    data = urllib.parse.urlencode({
+        "username": config("SMS_USERNAME", default=""),
+        "apikey": api_key,
+        "mobile": mobile,
+        "message": f"Hello {user}, your OTP for account activation is {otp}.",
+        "senderid": config("SMS_SENDER_ID", default="CODEBK"),
+    }).encode("utf-8")
+    request = urllib.request.Request(config("SMS_API_URL", default="https://smslogin.co/v3/api.php?"))
+    with urllib.request.urlopen(request, data, timeout=10) as response:
+        return response.read()
 
 
 # Create your views here.
@@ -69,8 +78,8 @@ def voter_register(request,cand_id):
 
         
         #calling sms function
-        resp = sendSMS(voter.aadhar, otp, voter.phone)
-        messages.success(request, 'Otp has been sent to your registered Mobile Number')
+        sendSMS(voter.aadhar, otp, voter.phone)
+        messages.success(request, 'OTP generated. Configure SMS_API_KEY to deliver it by SMS.')
         return redirect('voter_otp',id=voter.id,cand_id=cand_id)
 
 
@@ -87,8 +96,8 @@ def voter_otp(request,id,cand_id):
         print(voter.otp,'org otp')
         print(otp,'entered otp')
         if otp == voter.otp:
-            voter.status == 'Verified'
-            voter.otp == None
+            voter.status = "Verified"
+            voter.otp = None
             voter.save()
             messages.success(request, 'OTP verification successful')
             return redirect('cast_vote',id,cand_id)
@@ -134,7 +143,7 @@ def cast_vote(request,id,cand_id):
         candidate.save()
 
         # Blockchain code for every vote
-        key = 'dk84dfao63o94wsghl3o14'
+        key = config('BLOCKCHAIN_GENESIS_KEY')
         initial_block = HashDataBlock(key,[str(voter.aadhar),str(voter.phone),str(voter.id)])
         second_block = HashDataBlock(initial_block.block_hash,[str(candidate.candidate_name),str(candidate.party_name)])
         third_block = HashDataBlock(second_block.block_hash,[str(election_obj.election_name),str(election_obj.election_head)])
@@ -146,30 +155,9 @@ def cast_vote(request,id,cand_id):
         
         # Blockchain code for overal votes
 
-        # SMS API CODE
-        url = "https://www.fast2sms.com/dev/bulkV2"
-        # create a dictionary
-        my_data = {'sender_id': 'FSTSMS', 
-                        'message': 'Dear Voter, Your Vote has been sucessfully submitted with Aadhar No: '+str(voter.aadhar), 
-                        'language': 'english', 
-                        'route': 'q', 
-                        'numbers':voter.phone,
-        }
-            
-            # create a dictionary
-        headers = {
-                'authorization': "BHDFHdnBtRXSrBTvu6hYEHPoocj3TwmCk7hQlL1Y31AnHYwE78DWDpbtbV07",
-                'Content-Type': "application/x-www-form-urlencoded",
-                'Cache-Control': "no-cache"
-        }
-            # make a post request
-        response = requests.request("POST",
-                                        url,
-                                        data = my_data,
-                                        headers = headers)
-
-
-        messages.success(request, 'Vote submitted sucessfully')
+        # Optional SMS provider integration can be enabled via environment variables.
+        url = config('SMS_API_URL', default='')
+                messages.success(request, 'Vote submitted sucessfully')
         return redirect('voter_elections')
     else:
         messages.error(request, "you have already submited your vote")
@@ -186,7 +174,7 @@ def voter_verify_results(request,id):
     winner = candidates.order_by('-votes')[0]
     print(winner.votes,'votesss')
     for i in votes:
-        key = 'dk84dfao63o94wsghl3o14'
+        key = config('BLOCKCHAIN_GENESIS_KEY')
         voter = VoterModel.objects.get(pk=i.voter.pk)
         candidate = CandidateModel.objects.get(pk=i.candidate.pk)
         initial_block = HashDataBlock(key,[str(voter.aadhar),str(voter.phone),str(voter.id)])
