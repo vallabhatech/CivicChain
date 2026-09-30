@@ -1,19 +1,22 @@
 from django.shortcuts import render,redirect
 from django.contrib import messages
+from django.contrib.auth import authenticate, login
+from decouple import config
 from .models import *
 from decentralizedvoting.BlockcahinAlgo import HashDataBlock
 
 # Create your views here.
 def admin_login(request):
     if request.method == 'POST':
-        username = request.POST.get('username')
-        password = request.POST.get('password')
-        if username == 'admin' and password == 'admin':
-            messages.success(request, 'Login Successful')
-            return redirect('admin_dashboard')
-        else:
-            messages.error(request, 'Invalid Login Credentials')
-            return redirect('admin_login')
+        username = request.POST.get("username", "").strip()
+        password = request.POST.get("password", "")
+        user = authenticate(request, username=username, password=password)
+        if user is not None and user.is_staff:
+            login(request, user)
+            messages.success(request, "Login successful")
+            return redirect("admin_dashboard")
+        messages.error(request, "Invalid admin credentials")
+        return redirect("admin_login")
     return render(request, 'main/admin-login.html')
 
 def admin_dashboard(request):
@@ -98,7 +101,7 @@ def verify_results(request,id):
     unverified = 0
     candidates = CandidateModel.objects.filter(election=election)
     for i in votes:
-        key = 'dk84dfao63o94wsghl3o14'
+        key = config('BLOCKCHAIN_GENESIS_KEY')
         voter = VoterModel.objects.get(pk=i.voter.pk)
         candidate = CandidateModel.objects.get(pk=i.candidate.pk)
         initial_block = HashDataBlock(key,[str(voter.aadhar),str(voter.phone),str(voter.id)])
