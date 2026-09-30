@@ -1,4 +1,3 @@
-import requests
 import random
 from datetime import date
 from django.shortcuts import render,redirect
@@ -54,29 +53,6 @@ def voter_register(request,cand_id):
             return redirect('voter_voting',id=election_obj.id)
 
 
-        # # SMS API CODE
-        # url = "https://www.fast2sms.com/dev/bulkV2"
-        # # create a dictionary
-        # my_data = {'sender_id': 'FSTSMS', 
-        #                 'message': 'Dear Voter For Aadhar No: '+str(voter.aadhar)+', Your OTP for Verification from DecentralizedVoting is '+ str(otp), 
-        #                 'language': 'english', 
-        #                 'route': 'q', 
-        #                 'numbers':voter.phone,
-        # }
-            
-        #     # create a dictionary
-        # headers = {
-        #         'authorization': "BHDFHdnBtRXSrBTvu6hYEHPoocj3TwmCk7hQlL1Y31AnHYwE78DWDpbtbV07",
-        #         'Content-Type': "application/x-www-form-urlencoded",
-        #         'Cache-Control': "no-cache"
-        # }
-        #     # make a post request
-        # response = requests.request("POST",
-        #                                 url,
-        #                                 data = my_data,
-        #                                 headers = headers)
-
-        
         #calling sms function
         sendSMS(voter.aadhar, otp, voter.phone)
         messages.success(request, 'OTP generated. Configure SMS_API_KEY to deliver it by SMS.')
@@ -153,11 +129,7 @@ def cast_vote(request,id,cand_id):
                                     candidate_block = second_block.block_hash,
                                     election_block = third_block.block_hash)
         
-        # Blockchain code for overal votes
-
-        # Optional SMS provider integration can be enabled via environment variables.
-        url = config('SMS_API_URL', default='')
-                messages.success(request, 'Vote submitted sucessfully')
+        messages.success(request, 'Vote submitted successfully')
         return redirect('voter_elections')
     else:
         messages.error(request, "you have already submited your vote")
